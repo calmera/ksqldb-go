@@ -30,15 +30,6 @@ import (
 	mocknet "github.com/thmeitz/ksqldb-go/mocks/net"
 )
 
-func TestPull_ParseSQLError(t *testing.T) {
-	m := mocknet.HTTPClient{}
-	kcl, _ := ksqldb.NewClient(&m)
-	kcl.EnableParseSQL(true)
-	_, _, err := kcl.Pull(context.TODO(), ksqldb.QueryOptions{Sql: "select * from bla"})
-	require.NotNil(t, err)
-	require.Equal(t, "1 sql syntax error(s) found", err.Error())
-}
-
 func TestPull_RequestError(t *testing.T) {
 	m := mocknet.HTTPClient{}
 	kcl, _ := ksqldb.NewClient(&m)

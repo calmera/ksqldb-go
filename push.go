@@ -24,8 +24,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/thmeitz/ksqldb-go/parser"
 )
 
 // Push queries are continuous queries in which new events
@@ -62,13 +60,6 @@ func (api *KsqldbClient) Push(ctx context.Context, options QueryOptions,
 
 	// remove \t \n from query
 	options.SanitizeQuery()
-
-	if api.ParseSQLEnabled() {
-		ksqlerr := parser.ParseSql(options.Sql)
-		if ksqlerr != nil {
-			return ksqlerr
-		}
-	}
 
 	jsonData, err := json.Marshal(options)
 	if err != nil {

@@ -55,16 +55,6 @@ func TestExecOption_EmptyQuery(t *testing.T) {
 	require.Equal(t, "empty ksql query", err.Error())
 }
 
-func TestExecute_ParseSQLError(t *testing.T) {
-	m := mocknet.HTTPClient{}
-	kcl, _ := ksqldb.NewClient(&m)
-	kcl.EnableParseSQL(true)
-	val, err := kcl.Execute(ksqldb.ExecOptions{KSql: "create table bla"})
-	require.Nil(t, val)
-	require.NotNil(t, err)
-	require.Equal(t, "1 sql syntax error(s) found", err.Error())
-}
-
 func TestExecute_NewKsqlRequest_Error(t *testing.T) {
 	m := mocknet.HTTPClient{}
 	m.Mock.On("GetUrl", mock.Anything).Return("http://localhost/ksql")

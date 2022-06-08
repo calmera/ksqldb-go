@@ -30,7 +30,6 @@ import (
 	"net/http"
 
 	"github.com/thmeitz/ksqldb-go/internal"
-	"github.com/thmeitz/ksqldb-go/parser"
 )
 
 type SessionVariablesMap map[string]interface{}
@@ -68,13 +67,6 @@ func (api *KsqldbClient) Execute(options ExecOptions) (*KsqlResponseSlice, error
 	}
 	// remove \t \n from query
 	options.SanitizeQuery()
-
-	if api.ParseSQLEnabled() {
-		ksqlerr := parser.ParseSql(options.KSql)
-		if ksqlerr != nil {
-			return nil, ksqlerr
-		}
-	}
 
 	jsonData, err := json.Marshal(options)
 	if err != nil {

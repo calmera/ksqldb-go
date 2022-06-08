@@ -23,8 +23,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/thmeitz/ksqldb-go/parser"
 )
 
 // Pull queries are like "traditional" RDBMS queries in which
@@ -53,13 +51,6 @@ func (api *KsqldbClient) Pull(ctx context.Context, options QueryOptions) (header
 
 	// remove \t \n from query
 	options.SanitizeQuery()
-
-	if api.ParseSQLEnabled() {
-		ksqlerr := parser.ParseSql(options.Sql)
-		if ksqlerr != nil {
-			return header, payload, ksqlerr
-		}
-	}
 
 	jsonData, err := json.Marshal(options)
 	if err != nil {

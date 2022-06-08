@@ -40,16 +40,6 @@ func TestPush_EmptyQuery(t *testing.T) {
 	require.NotNil(t, err)
 	require.Equal(t, "empty ksql query", err.Error())
 }
-func TestPush_ParseSQLError(t *testing.T) {
-	rowChannel := make(chan ksqldb.Row)
-	headerChannel := make(chan ksqldb.Header, 1)
-	m := mocknet.HTTPClient{}
-	kcl, _ := ksqldb.NewClient(&m)
-	kcl.EnableParseSQL(true)
-	err := kcl.Push(context.TODO(), ksqldb.QueryOptions{Sql: "select * from bla"}, rowChannel, headerChannel)
-	require.NotNil(t, err)
-	require.Equal(t, "1 sql syntax error(s) found", err.Error())
-}
 
 func TestPush_RequestError(t *testing.T) {
 	rowChannel := make(chan ksqldb.Row)
